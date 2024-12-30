@@ -1,0 +1,27 @@
+package com.gaurav.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.gaurav.dto.EmployeeDto;
+import com.gaurav.model.Employee;
+import com.gaurav.repository.EmployeeRep;
+import java.util.*;
+
+@Service
+public class EmployeeService {
+	@Autowired
+	private EmployeeRep erep;
+	
+	public EmployeeDto saveEmployee(EmployeeDto edto) {
+		Employee employeeEntity = EmployeeDto.toEmployeeEntity(edto);
+		Employee e=erep.save(employeeEntity);
+		EmployeeDto employeeDto = EmployeeDto.toEmployeeDto(e);
+		return employeeDto;
+		
+	}
+	
+	public List<EmployeeDto> getAllEmployees(){
+		
+	}
+}

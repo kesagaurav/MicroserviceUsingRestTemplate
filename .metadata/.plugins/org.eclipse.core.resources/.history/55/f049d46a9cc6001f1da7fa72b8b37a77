@@ -1,0 +1,4 @@
+spring.application.name=RestTemplateUsingCompany
+
+server.port=9092
+server.error.whitelabel.enabled=false

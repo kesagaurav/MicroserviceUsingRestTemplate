@@ -1,0 +1,39 @@
+package com.gaurav.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.gaurav.dto.CompanyDto;
+import com.gaurav.model.Company;
+import com.gaurav.repository.CompanyRep;
+import java.util.*;
+import java.util.stream.Collectors;
+
+@Service
+public class CompanyService {
+	@Autowired
+	private CompanyRep crep;
+
+	public CompanyDto saveCompany(CompanyDto dto) {
+		//companyDto to company
+		Company c = CompanyDto.toEntityCompany(dto);
+		Company save = crep.save(c);
+		//company to companyDto
+		CompanyDto companyDto = dto.toCompanyDto(save);
+		return companyDto;
+
+	}
+	
+	public List<CompanyDto> getAllCompanies(){
+		List<Company> cList=crep.findAll();
+		CompanyDto dto=new CompanyDto();
+		List<CompanyDto> collectDto = cList.stream().map(a->CompanyDto.toCompanyDto(a)).collect(Collectors.toList());
+		return collectDto;
+	}
+	
+	public CompanyDto getById(int id) {
+		Company c=crep.findById(id).get();
+		CompanyDto dto=CompanyDto.toCompanyDto(c);
+		return dto;
+	}
+}

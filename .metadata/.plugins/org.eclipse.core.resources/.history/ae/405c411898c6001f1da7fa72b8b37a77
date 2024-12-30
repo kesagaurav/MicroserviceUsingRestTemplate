@@ -1,0 +1,23 @@
+package com.gaurav.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.gaurav.dto.CompanyDto;
+import com.gaurav.model.Company;
+import com.gaurav.repository.CompanyRep;
+
+@Service
+public class CompanyService {
+	@Autowired
+	private CompanyRep crep;
+
+	public CompanyDto saveCompany(CompanyDto dto) {
+		Company c=CompanyDto.toEntityCompany(dto);
+		Company save=crep.save(c);
+		CompanyDto company = dto.toCompany(save);
+		return company;
+		
+		
+	}
+}

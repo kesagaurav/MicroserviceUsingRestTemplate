@@ -1,0 +1,31 @@
+package com.gaurav.dto;
+
+import com.gaurav.model.Employee;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter @Setter
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
+public class EmployeeDto {
+
+	private int eid;
+	private String name;
+	private String gender;
+	private int age;
+	private String dept;
+	//convert employeeDto to employee
+	public Employee toEmployeeDto(EmployeeDto edto) {
+		Employee e=new Employee();
+		
+	}
+	
+	
+	
+}

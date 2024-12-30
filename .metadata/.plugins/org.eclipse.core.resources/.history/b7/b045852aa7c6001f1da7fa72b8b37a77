@@ -1,0 +1,50 @@
+package com.gaurav.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
+
+import com.gaurav.dto.CompanyDto;
+import com.gaurav.dto.EmployeeDto;
+import com.gaurav.service.EmployeeService;
+
+@RestController
+public class EmployeeController {
+	@Autowired
+	private EmployeeService eser;
+	@Autowired
+	RestTemplate template;
+	@PostMapping("/employee")
+	public ResponseEntity<EmployeeDto> saveEmployee(@RequestBody EmployeeDto edto) {
+		return new ResponseEntity<EmployeeDto>(eser.saveEmployee(edto), HttpStatus.OK);
+	}
+	
+	
+	@GetMapping("/employees")
+	public ResponseEntity<List<EmployeeDto>> getAllEmployee() {
+		return new ResponseEntity<List<EmployeeDto>>(eser.getAllEmployees(), HttpStatus.OK);
+	}
+	
+	
+	
+	@GetMapping("/employee/{id}")
+	public ResponseEntity<EmployeeDto> getById(@PathVariable int id) {
+		EmployeeDto edto=eser.getById(id);
+		CompanyDto cdto=new RestTemplate()
+		return new ResponseEntity<EmployeeDto>(eser.getById(id), HttpStatus.OK);
+	}
+	
+	@DeleteMapping("/employee/{id}")
+	public void delete(@PathVariable int id) {
+		eser.delete(id);
+	}
+}

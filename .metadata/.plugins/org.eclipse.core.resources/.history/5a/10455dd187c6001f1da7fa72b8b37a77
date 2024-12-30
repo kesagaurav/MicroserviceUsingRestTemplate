@@ -1,0 +1,14 @@
+package com.gaurav.model;
+
+import jakarta.persistence.Entity;
+import lombok.Data;
+
+@Data
+@Entity
+public class Company {
+
+	private int cid;
+	private String cName;
+	private String loc;
+	
+}

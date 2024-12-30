@@ -1,0 +1,12 @@
+package com.gaurav;
+
+import lombok.Data;
+
+@Data
+public class Company {
+
+	private int cid;
+	private String cName;
+	private String loc;
+	
+}

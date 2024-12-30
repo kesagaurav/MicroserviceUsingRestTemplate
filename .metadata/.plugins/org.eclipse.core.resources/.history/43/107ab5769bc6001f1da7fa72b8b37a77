@@ -1,0 +1,19 @@
+package com.gaurav.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.gaurav.dto.CompanyDto;
+import com.gaurav.service.CompanyService;
+
+@RestController
+public class EmployeeController {
+	@Autowired
+	private CompanyService cser;
+
+	public ResponseEntity<CompanyDto> saveCompanyDto(CompanyDto dto) {
+		CompanyDto dto1 = cser.saveCompany(dto);
+
+	}
+}
