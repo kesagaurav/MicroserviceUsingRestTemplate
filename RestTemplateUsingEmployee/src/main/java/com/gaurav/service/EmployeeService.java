@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gaurav.dto.EmployeeDto;
+import com.gaurav.exceptions.EmployeeNotFoundException;
 import com.gaurav.model.Employee;
 import com.gaurav.repository.EmployeeRep;
 
@@ -31,9 +32,12 @@ public class EmployeeService {
 //	}
 
 	public Employee saveEmployee(EmployeeDto edto) {
+//		System.out.println(edto.getCdto().getCid());
 		Employee e = edto.toEmployeeEntity();
-
-		return erep.save(e);
+		//Employee e=EmployeeDto.toEmployeeEntity(edto);
+		Employee e2=erep.save(e);
+		
+		return e2;
 
 	}
 
@@ -43,14 +47,27 @@ public class EmployeeService {
 		return dtList;
 	}
 
-	public EmployeeDto getById(int id) {
+	public EmployeeDto getById(int id) throws EmployeeNotFoundException {
 		Optional<Employee> e = erep.findById(id);
+		EmployeeDto edto = null;
+		if (e.isPresent()) {
+			edto = EmployeeDto.toEmployeeDto(e.get());
+
+		}else {
+			e.orElseThrow(()-> new EmployeeNotFoundException("id not found " + id));
+		}
+		return edto;
+	}
+	
+	public EmployeeDto getEmployeeProfile(long phoneNo) {
+		Optional<Employee> e=erep.findByPhoneNo(phoneNo);
 		EmployeeDto edto = null;
 		if (e.isPresent()) {
 			edto = EmployeeDto.toEmployeeDto(e.get());
 
 		}
 		return edto;
+		
 	}
 
 	public void delete(int id) {

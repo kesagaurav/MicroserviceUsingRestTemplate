@@ -15,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.gaurav.dto.CompanyDto;
 import com.gaurav.dto.EmployeeDto;
+import com.gaurav.exceptions.EmployeeNotFoundException;
 import com.gaurav.model.Employee;
 import com.gaurav.service.EmployeeService;
 
@@ -28,7 +29,7 @@ public class EmployeeController {
 
 	@PostMapping("/employee")
 	public ResponseEntity<Employee> saveEmployee(@RequestBody EmployeeDto edto) {
-		return new ResponseEntity<Employee>(eser.saveEmployee(edto),HttpStatus.OK);
+		return new ResponseEntity<Employee>(eser.saveEmployee(edto), HttpStatus.OK);
 		// return new ResponseEntity<String>(Ht);
 	}
 
@@ -37,25 +38,33 @@ public class EmployeeController {
 		return new ResponseEntity<List<EmployeeDto>>(eser.getAllEmployees(), HttpStatus.OK);
 	}
 
-	@GetMapping("/employee/{id}")
-	public ResponseEntity<EmployeeDto> getById(@PathVariable int id) {
+	@GetMapping("/employee/id/{id}")
+	public ResponseEntity<EmployeeDto> getById(@PathVariable int id) throws EmployeeNotFoundException {
 		EmployeeDto edto = eser.getById(id);
-		if (edto != null && edto.getCdto() != null) {
-			CompanyDto cdto = new RestTemplate()
-					.getForObject("http://localhost:9092/company/"+edto.getCdto().getCid(), CompanyDto.class);
-			edto.setCdto(cdto);//+ edto.getCdto().getCid()
-		} else if (edto == null) {
+		CompanyDto cdto = new RestTemplate().getForObject("http://localhost:9092/company/" + edto.getCdto().getCid(),
+				CompanyDto.class);
+		edto.setCdto(cdto);// + edto.getCdto().getCid()
+//		List<Long> friend = new RestTemplate().getForObject("http://localhost:9093/friend/", List.class);
 
-			return new ResponseEntity<EmployeeDto>(edto, HttpStatus.NOT_FOUND);
-		} else {
-			return ResponseEntity.ok(edto);
-		}
-		
-			return new ResponseEntity<EmployeeDto>(edto, HttpStatus.OK);
-
-		
+		return new ResponseEntity<EmployeeDto>(edto, HttpStatus.OK);
 
 	}
+	
+	
+	
+	@GetMapping("/employee/{phoneNo}")
+	public ResponseEntity<EmployeeDto> getEmployeeprofile(@PathVariable Long phoneNo) {
+		EmployeeDto edto = eser.getEmployeeProfile(phoneNo);
+	        CompanyDto cdto = new RestTemplate().getForObject("http://localhost:9092/company/"+edto.getCdto().getCid(), 
+	                CompanyDto.class);
+	        edto.setCdto(cdto); 
+	    
+		List<Long> friend = new RestTemplate().getForObject("http://localhost:9093/friend/phone/"+phoneNo, List.class);
+		edto.setFriend(friend);
+		return new ResponseEntity<EmployeeDto>(edto, HttpStatus.OK);
+
+	}
+	
 
 	@DeleteMapping("/employee/{id}")
 	public void delete(@PathVariable int id) {
